@@ -1,0 +1,6 @@
+@EcomFinale.Web_HostAddress = http://localhost:5161
+
+GET {{EcomFinale.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

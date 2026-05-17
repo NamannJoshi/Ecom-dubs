@@ -1,0 +1,14 @@
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\bin\Debug\net10.0\EcomFinale.DataAccess.deps.json
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\bin\Debug\net10.0\EcomFinale.DataAccess.runtimeconfig.json
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\bin\Debug\net10.0\EcomFinale.DataAccess.dll
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\bin\Debug\net10.0\EcomFinale.DataAccess.pdb
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.AssemblyInfo.cs
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.dll
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\refint\EcomFinale.DataAccess.dll
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.pdb
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\EcomFinale.DataAccess.genruntimeconfig.cache
+C:\Users\Naman\Desktop\netDev\EcomFinale\EcomFinale.DataAccess\obj\Debug\net10.0\ref\EcomFinale.DataAccess.dll

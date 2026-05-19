@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EcomFinale.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260517083516_InitialSchemas")]
+    [Migration("20260519162856_InitialSchemas")]
     partial class InitialSchemas
     {
         /// <inheritdoc />

@@ -33,13 +33,7 @@ public class UserService : IUserService
         var entity = this.mapper.Map<User>(user);
         var created = await this.userRepository.Create(entity);
 
-        // return this.mapper.Map<UserDto>(created);
-        return new UserDto
-        {
-            Id = created.Id,
-            Username = created.Username,
-            Email = created.Email,
-        };
+        return this.mapper.Map<UserDto>(created);
     }
 
     public async Task<UserDto?> GetById(int id)

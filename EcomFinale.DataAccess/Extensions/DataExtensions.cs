@@ -19,6 +19,9 @@ public static class DataExtensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         return services
+            .AddScoped<ICartRepository, CartRepository>()
+            .AddScoped<ICartItemRepository, CartItemRepository>()
+            .AddScoped<IProductCategoryRepository, ProductCategoryRepository>()
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<IUserRepository, UserRepository>();
     }

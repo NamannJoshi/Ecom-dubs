@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+#nullable disable
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcomFinale.DataAccess.Entities;

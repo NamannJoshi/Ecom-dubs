@@ -2,6 +2,7 @@ using AutoMapper;
 using EcomFinale.DataAccess.Repositories;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Entities;
+using EcomFinale.Business.Common;
 
 namespace EcomFinale.Business.Services.Implementation;
 
@@ -33,16 +34,10 @@ public class ProductService : IProductService
     {
         var entity = this.mapper.Map<Product>(productDto);
 
+        AuditHelper.ApplyAuditValues(entity, true);
         var created = await this.productRepository.Create(entity);
 
-        return new ProductDto
-        {
-            Id = created.Id,
-            Name = created.Name,
-            Description = created.Description,
-            Price = created.Price,
-            StockQuantity = created.StockQuantity
-        };
+        return this.mapper.Map<ProductDto>(created);
     }
 
     public async Task<ProductDto?> GetById(int id)
@@ -67,7 +62,8 @@ public class ProductService : IProductService
         }
 
         this.mapper.Map(productDto, product);
-
+        AuditHelper.ApplyAuditValues(product, false);
+        
         await this.productRepository.SaveChanges();
 
         return this.mapper.Map<ProductDto>(product);

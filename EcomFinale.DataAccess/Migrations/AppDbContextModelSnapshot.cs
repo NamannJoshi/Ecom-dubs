@@ -74,6 +74,9 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(12,2)");
 

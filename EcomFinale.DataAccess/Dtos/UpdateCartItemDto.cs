@@ -1,6 +1,6 @@
 namespace EcomFinale.DataAccess.Dtos;
 
-public class CreateCartItemDto
+public class UpdateCartItemDto
 {
     public int ProductId { get; set; }
 

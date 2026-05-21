@@ -1,7 +1,5 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Common;
 
 namespace EcomFinale.DataAccess.Entities;
 
@@ -14,6 +12,9 @@ public class CartItem
     public int CartId {get; set;}
 
     public int ProductId {get; set;}
+
+    [Range(0, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+    public int Quantity {get; set;}
 
     public DateTime CreatedAt {get; set; }
 

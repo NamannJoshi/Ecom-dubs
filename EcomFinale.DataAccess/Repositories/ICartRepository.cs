@@ -10,6 +10,8 @@ public interface ICartRepository
 
     Task<Cart?> GetById(int id);
 
+    Task<Cart?> GetByUserId(int userId);
+
     Task Delete(int id);
 
     Task SaveChanges();

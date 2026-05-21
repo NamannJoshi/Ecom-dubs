@@ -20,6 +20,7 @@ public class CartItemRepository : ICartItemRepository
     public async Task<CartItem?> GetById(int id)
     {
         return await this.context.CartItems
+            .Include(ci => ci.Product)
             .FirstOrDefaultAsync(cartItem => cartItem.Id == id);
     }
 

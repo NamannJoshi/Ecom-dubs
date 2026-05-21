@@ -23,6 +23,7 @@ public static class DataExtensions
             .AddScoped<ICartItemRepository, CartItemRepository>()
             .AddScoped<IProductCategoryRepository, ProductCategoryRepository>()
             .AddScoped<IProductRepository, ProductRepository>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

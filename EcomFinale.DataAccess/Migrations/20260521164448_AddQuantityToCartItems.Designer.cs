@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EcomFinale.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260519162856_InitialSchemas")]
-    partial class InitialSchemas
+    [Migration("20260521164448_AddQuantityToCartItems")]
+    partial class AddQuantityToCartItems
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,9 @@ namespace EcomFinale.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("UnitPrice")

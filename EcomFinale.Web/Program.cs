@@ -1,5 +1,6 @@
 using EcomFinale.Business.Extensions;
 using EcomFinale.DataAccess.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -35,5 +36,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var database = scope.ServiceProvider.GetRequiredService<EcomFinale.DataAccess.AppDbContext>();
+//     database.Database.Migrate();
+// }
 
 app.Run();

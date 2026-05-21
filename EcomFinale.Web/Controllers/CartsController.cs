@@ -31,35 +31,19 @@ public class CartsController : ControllerBase
     public async Task<ActionResult<CartDto>> GetById(int id)
     {
         var cart = await this.cartService.GetById(id);
-
         if (cart == null)
         {
             return NotFound();
         }
-
         return Ok(cart);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<CartDto>> CreateCart(CartDto cartDto)
-    {
-        var created = await this.cartService.Create(cartDto);
-
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = created.Id },
-            created
-        );
-    }
-
-    [HttpPut("{id}")]
-    public async Task<ActionResult<CartDto>> UpdateCart(
-        int id,
-        CartDto cartDto
+    [HttpPut("{id}/checkout")]
+    public async Task<ActionResult<CartDto>> CheckoutCart(
+        int id
     )
     {
-        var updated = await this.cartService.Update(cartDto, id);
-
+        var updated = await this.cartService.CheckoutCart(id);
         return Ok(updated);
     }
 
@@ -67,7 +51,6 @@ public class CartsController : ControllerBase
     public async Task<ActionResult> DeleteCart(int id)
     {
         await this.cartService.Delete(id);
-
         return NoContent();
     }
 }

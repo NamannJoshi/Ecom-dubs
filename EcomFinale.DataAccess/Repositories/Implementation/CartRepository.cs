@@ -31,6 +31,11 @@ public class CartRepository : ICartRepository
         return await this.context.Carts.FindAsync(id);
     }
 
+    public async Task<Cart?> GetByUserId(int userId)
+    {
+        return await this.context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+    }
+
     public async Task Delete(int id)
     {
         var cart = await this.context.Carts

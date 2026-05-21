@@ -9,6 +9,7 @@ public static class BusinessExtensions
     public static IServiceCollection AddBusinessExtensions(this IServiceCollection services)
     {
         return services
+            .AddScoped<ICartItemService, CartItemService>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductCategoryService, ProductCategoryService>()
             .AddScoped<IProductService, ProductService>()

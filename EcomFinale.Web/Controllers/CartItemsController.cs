@@ -15,41 +15,22 @@ public class CartItemsController : ControllerBase
         this.cartItemService = cartItemService;
     }
 
-    [HttpGet]
-    public ActionResult<IQueryable<CartItemDto>> GetAll()
-    {
-        return Ok(this.cartItemService.GetAll());
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<CartItemDto>> GetById(int id)
-    {
-        var cartItem = await this.cartItemService.GetById(id);
-
-        return Ok(cartItem);
-    }
-
     [HttpPost]
     public async Task<ActionResult<CartItemDto>> Create(
         [FromBody] CreateCartItemDto cartItemDto
     )
     {
         var created = await this.cartItemService.Create(cartItemDto);
-
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = created.Id },
-            created
-        );
+        return Created($"/api/cartitems/{created.Id}", created);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<CartItemDto>> Update(
+    public async Task<ActionResult<UpdateCartItemDto>> UpdateItemQuantity(
         int id,
-        [FromBody] CreateCartItemDto cartItemDto
+        [FromBody] UpdateCartItemDto updateCartItemDto
     )
     {
-        var updated = await this.cartItemService.Update(cartItemDto, id);
+        var updated = await this.cartItemService.UpdateItemQuantity(updateCartItemDto, id);
 
         return Ok(updated);
     }

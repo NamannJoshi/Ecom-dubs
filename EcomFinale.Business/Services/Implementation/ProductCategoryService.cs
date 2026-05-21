@@ -35,6 +35,9 @@ public class ProductCategoryService : IProductCategoryService
     {
         var entity = this.mapper.Map<ProductCategory>(categoryDto);
         AuditHelper.ApplyAuditValues(entity, true);
+        var utc = DateTime.UtcNow;
+        entity.CreatedBy = 1;
+        entity.ModifiedBy = 1;
 
         var created = await this.productCategoryRepository.Create(entity);
 

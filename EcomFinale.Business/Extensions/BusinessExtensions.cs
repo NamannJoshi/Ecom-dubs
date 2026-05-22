@@ -12,6 +12,7 @@ public static class BusinessExtensions
             .AddScoped<ICartItemService, CartItemService>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductCategoryService, ProductCategoryService>()
+            .AddScoped<IOrderService, OrderService>()
             .AddScoped<IProductService, ProductService>()
             .AddScoped<IUserService, UserService>();
     }

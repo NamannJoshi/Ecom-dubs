@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Common;
 
 namespace EcomFinale.DataAccess.Entities;
 
@@ -11,6 +9,8 @@ public class Order : AuditEntity
 
     public int UserId {get; set;}
 
+    public OrderStatus Status { get; set; }
+
     [ForeignKey(nameof(UserId))]
     public User User {get; set;}
 
@@ -19,4 +19,14 @@ public class Order : AuditEntity
     public ICollection<Payment> Payments {get; set;}
 
     public ICollection<OrderItem> OrderItems {get; set;}
+}
+
+public enum OrderStatus
+{
+    Pending,
+    Processing,
+    Shipped,
+    Delivered,
+    Cancelled,
+    Refunded,
 }

@@ -9,7 +9,7 @@ public interface ICartService
 
     Task<CartDto?> GetById(int id);
 
-    Task<CartDto> Update(CartStatus cartStatus, int id);
+    Task<CartDto> Update(CartDto cartDto, int id);
 
     Task<CartDto> CheckoutCart(int id);
 

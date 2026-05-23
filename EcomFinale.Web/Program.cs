@@ -1,16 +1,15 @@
 using EcomFinale.Business.Extensions;
 using EcomFinale.DataAccess.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddDataExtensions(config);
 builder.Services.AddRepositories();
 builder.Services.AddBusinessExtensions();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();

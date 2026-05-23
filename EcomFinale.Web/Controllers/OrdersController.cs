@@ -23,9 +23,15 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateOrder(OrderDto orderCreateDto)
+    public async Task<IActionResult> CreateOrder([FromBody] OrderDto orderCreateDto, [FromHeader(Name = "Idempotency-Key")] string? idempotencyKey)
     {
-        var createdOrder = await this.orderService.CreateOrder(orderCreateDto);
+        var idempotencyId = idempotencyKey ?? throw new ArgumentException("Idempotency-Key header is required");
+
+        if (!Guid.TryParse(idempotencyId, out var parsedIdempotencyId))
+        {
+            throw new ArgumentException("Idempotency-Key header must be a valid GUID");
+        }
+        var createdOrder = await this.orderService.CreateOrder(orderCreateDto, parsedIdempotencyId);
         return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
     }
 

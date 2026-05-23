@@ -33,7 +33,10 @@ public class CartRepository : ICartRepository
 
     public async Task<Cart?> GetByUserId(int userId)
     {
-        return await this.context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+        return await this.context.Carts
+            .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+            .FirstOrDefaultAsync(c => c.UserId == userId);
     }
 
     public async Task Delete(int id)

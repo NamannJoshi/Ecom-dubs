@@ -33,6 +33,13 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    public async Task<Order?> GetByIdempotencyId(Guid idempotencyId)
+    {
+        return await this.context.Orders
+            .Include(o => o.OrderItems)
+            .FirstOrDefaultAsync(o => o.IdempotencyId == idempotencyId);
+    }
+
     public async Task SaveChangesAsync()
     {
         await this.context.SaveChangesAsync();

@@ -47,7 +47,7 @@ public class CartService : ICartService
         return this.mapper.Map<CartDto>(cart);
     }
 
-    public async Task<CartDto> Update(CartStatus cartStatus, int id)
+    public async Task<CartDto> Update(CartDto cartDto, int id)
     {
         var cart = await this.cartRepository.GetById(id);
 
@@ -58,7 +58,7 @@ public class CartService : ICartService
             );
         }
 
-        cart.CartStatus = cartStatus;
+        cart.CartStatus = cartDto.CartStatus;
         await this.cartRepository.SaveChanges();
 
         return this.mapper.Map<CartDto>(cart);
@@ -66,7 +66,11 @@ public class CartService : ICartService
 
     public async Task<CartDto> CheckoutCart(int id)
     {
-        return await this.Update(CartStatus.Converted, id);
+        var cartDto = new CartDto
+        {
+            CartStatus = CartStatus.Converted
+        };
+        return await this.Update(cartDto, id);
     }
   
     public async Task Delete(int id)

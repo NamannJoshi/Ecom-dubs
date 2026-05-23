@@ -1,8 +1,6 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Entities;
-using EcomFinale.DataAccess.Enums;
 using EcomFinale.DataAccess.Repositories;
 
 namespace EcomFinale.Business.Services.Implementation;
@@ -12,18 +10,21 @@ public class CartItemService : ICartItemService
     private readonly IUnitOfWork unitOfWork;
     private readonly ICartItemRepository cartItemRepository;
     private readonly ICartRepository cartRepository;
+    private readonly IProductRepository productRepository;
     private readonly IMapper mapper;
 
     public CartItemService(
         IUnitOfWork unitOfWork,
         ICartItemRepository cartItemRepository,
         ICartRepository cartRepository,
+        IProductRepository productRepository,
         IMapper mapper
     )
     {
         this.unitOfWork = unitOfWork;
         this.cartItemRepository = cartItemRepository;
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
         this.mapper = mapper;
     }
   
@@ -31,6 +32,14 @@ public class CartItemService : ICartItemService
     {
         var currentUserId = 1;
         var cart = await this.cartRepository.GetByUserId(currentUserId);
+
+        var product = await this.productRepository.GetById(cartItemDto.ProductId) ??
+                throw new KeyNotFoundException("Product with matching identifier is not found");
+            
+        if (product.StockQuantity < cartItemDto.Quantity)
+        {
+            throw new InvalidOperationException("Requested quantity is not available in stock");
+        }
 
         await this.unitOfWork.BeginTransactionAsync();
 

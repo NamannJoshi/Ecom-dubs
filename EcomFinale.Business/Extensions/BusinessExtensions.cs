@@ -1,3 +1,4 @@
+using EcomFinale.Business.BackgroundServices;
 using EcomFinale.Business.Services;
 using EcomFinale.Business.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ public static class BusinessExtensions
             .AddScoped<IProductCategoryService, ProductCategoryService>()
             .AddScoped<IOrderService, OrderService>()
             .AddScoped<IProductService, ProductService>()
-            .AddScoped<IUserService, UserService>();
+            .AddScoped<IUserService, UserService>()
+            .AddHostedService<ExpiredOrderCleanupService>();
     }
 }

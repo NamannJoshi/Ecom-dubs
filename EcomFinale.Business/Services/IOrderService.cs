@@ -8,4 +8,6 @@ public interface IOrderService
     Task<OrderDto> GetOrderById(int id);
     IQueryable<OrderDto> GetAllOrders();
     Task<OrderDto> UpdateOrder(int id, OrderDto orderUpdateDto);
+    Task OrderRollback();
+    Task Checkout(int orderId);
 }

@@ -35,6 +35,7 @@ public class Order : AuditEntity
 public enum OrderStatus
 {
     Pending,
+    Abandoned,
     Processing,
     Shipped,
     Delivered,

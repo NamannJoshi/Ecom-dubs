@@ -7,6 +7,8 @@ public interface IProductRepository
     IQueryable<Product> GetAllProducts();
     
     Task<Product> Create(Product product);
+
+    Task DeductProductStock(int productId, int quantity);
     
     Task<Product?> GetById(int id);
     

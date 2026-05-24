@@ -29,6 +29,21 @@ public class ProductRepository : IProductRepository
         return await this.context.Products.FindAsync(id);
     }
 
+    public async Task DeductProductStock(int productId, int quantity)
+    {
+        var affectedRows = await context.Database.ExecuteSqlInterpolatedAsync($@"
+            UPDATE ""Products""
+            SET ""StockQuantity"" = ""StockQuantity"" - {quantity}
+            WHERE ""Id"" = {productId}
+            AND ""StockQuantity"" >= {quantity};
+        ");
+
+        if (affectedRows == 0)
+        {
+            throw new Exception("Out of stock");
+        }
+    }
+
     public async Task Delete(int id)
     {
         var product = await this.context.Products.FirstOrDefaultAsync(p => p.Id == id);

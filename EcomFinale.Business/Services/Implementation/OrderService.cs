@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using AutoMapper.QueryableExtensions;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Entities;
@@ -15,7 +14,6 @@ public class OrderService : IOrderService
     private readonly IProductRepository productRepository;
     private readonly ICartRepository cartRepository;
     private readonly IOrderItemRepository orderItemRepository;
-    private readonly IHttpContextAccessor httpContextAccessor;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper mapper;
 
@@ -23,14 +21,12 @@ public class OrderService : IOrderService
         IOrderRepository orderRepository,
         IProductRepository productRepository,
         ICartRepository cartRepository,
-        IHttpContextAccessor httpContextAccessor,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
-        this.httpContextAccessor = httpContextAccessor;
         _unitOfWork = unitOfWork;
         this.mapper = mapper;
     }
@@ -135,8 +131,6 @@ public class OrderService : IOrderService
         await this.cartRepository.SaveChanges();
         await this.orderRepository.SaveChangesAsync();
     }
-
-    public async Task HandlePaymentResponse()
 
     public async Task<OrderDto> GetOrderById(int id)
     {

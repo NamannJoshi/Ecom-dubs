@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "GxKWyKQhWxc=",
+  "dgSpecHash": "NRP2P5W69qM=",
   "success": true,
   "projectFilePath": "C:\\Users\\Naman\\Desktop\\netDev\\EcomFinale\\EcomFinale.Web\\EcomFinale.Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Naman\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Naman\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Naman\\.nuget\\packages\\efcore.namingconventions\\10.0.1\\efcore.namingconventions.10.0.1.nupkg.sha512",
     "C:\\Users\\Naman\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Naman\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.8\\microsoft.aspnetcore.authentication.jwtbearer.10.0.8.nupkg.sha512",
@@ -58,6 +60,18 @@
       "warningLevel": 1,
       "filePath": "C:\\Users\\Naman\\Desktop\\netDev\\EcomFinale\\EcomFinale.Web\\EcomFinale.Web.csproj",
       "libraryId": "Microsoft.Extensions.DependencyInjection",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'AutoMapper' 12.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
+      "projectPath": "C:\\Users\\Naman\\Desktop\\netDev\\EcomFinale\\EcomFinale.Web\\EcomFinale.Web.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Naman\\Desktop\\netDev\\EcomFinale\\EcomFinale.Web\\EcomFinale.Web.csproj",
+      "libraryId": "AutoMapper",
       "targetGraphs": [
         "net10.0"
       ]

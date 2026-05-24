@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EcomFinale.Business")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+674300a79b33b7033050ec9df1e5e709137aa278")]
 [assembly: System.Reflection.AssemblyProductAttribute("EcomFinale.Business")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EcomFinale.Business")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

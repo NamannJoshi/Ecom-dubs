@@ -20,4 +20,8 @@
     <Folder Include="Services\Implementation\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EcomFinale.DataAccess\EcomFinale.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EcomFinale.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260517083516_InitialSchemas")]
-    partial class InitialSchemas
+    [Migration("20260523075325_AddPaymentMethodId")]
+    partial class AddPaymentMethodId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,9 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(12,2)");
 
@@ -100,11 +103,26 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("IdempotencyId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("integer");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PaymentMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -112,6 +130,9 @@ namespace EcomFinale.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("IdempotencyId")
+                        .IsUnique();
 
                     b.HasIndex("ModifiedBy");
 

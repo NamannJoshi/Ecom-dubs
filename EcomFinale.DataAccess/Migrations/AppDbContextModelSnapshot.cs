@@ -74,6 +74,9 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(12,2)");
 
@@ -94,8 +97,17 @@ namespace EcomFinale.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("IdempotencyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("integer");
@@ -103,12 +115,27 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PaymentMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("IdempotencyId")
+                        .IsUnique();
 
                     b.HasIndex("ModifiedBy");
 
@@ -165,8 +192,14 @@ namespace EcomFinale.DataAccess.Migrations
                     b.Property<decimal>("AmountPaid")
                         .HasColumnType("decimal(12,2)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("integer");
@@ -204,6 +237,9 @@ namespace EcomFinale.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
 
@@ -211,6 +247,9 @@ namespace EcomFinale.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(1200)
                         .HasColumnType("character varying(1200)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("integer");
@@ -248,11 +287,17 @@ namespace EcomFinale.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("integer");

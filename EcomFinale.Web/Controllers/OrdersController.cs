@@ -1,9 +1,11 @@
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcomFinale.Web.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/Orders")]
 public class OrdersController : ControllerBase
@@ -43,6 +45,7 @@ public class OrdersController : ControllerBase
         return Ok(order);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpGet]
     public IActionResult GetAllOrders()
     {

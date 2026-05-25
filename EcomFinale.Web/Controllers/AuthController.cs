@@ -9,23 +9,26 @@ namespace EcomFinale.Web.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
 
-    public AuthController(ITokenService tokenService)
+    public AuthController(ITokenService tokenService, IUserService userService)
     {
         _tokenService = tokenService;
+        _userService = userService;
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         // For demonstration, we are using hardcoded user validation.
         // In a real application, you would validate the user against a database.
-        if (request.Email == "user@example.com" && request.Password == "password")
+        var user = await _userService.GetByEmail(request.Email);
+        if (user == null || user.PasswordHash != request.Password)
         {
-            var token = _tokenService.GenerateToken("1", request.Email);
-            return Ok(new { Token = token });
+            return Unauthorized();
         }
-
-        return Unauthorized();
+    
+        var token = _tokenService.GenerateToken(user.Id.ToString(), request.Email, user.Role);
+        return Ok(new { Token = token });
     }
 }

@@ -19,7 +19,18 @@ public class User
     [MaxLength(300)]
     public string Email {get; set;}
 
+    [Required]
+    public string PasswordHash {get; set;}
+
+    public UserRole Role {get; set;} = UserRole.User;
+
     public ICollection<Order> Orders {get; set;}
 
     public ICollection<Cart> Carts {get;set;}
+}
+
+public enum UserRole
+{
+    Admin,
+    User
 }

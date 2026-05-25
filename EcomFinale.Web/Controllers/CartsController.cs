@@ -1,11 +1,13 @@
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcomFinale.Web.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/Carts")]
 public class CartsController : ControllerBase

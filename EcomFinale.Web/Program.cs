@@ -35,8 +35,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 
 builder.Services.AddJwtExtension(config);
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly",
+        policy => policy.RequireRole("Admin"));
 
+    options.AddPolicy("UserOnly",
+        policy => policy.RequireRole("User"));
+});
 
 var app = builder.Build();
 

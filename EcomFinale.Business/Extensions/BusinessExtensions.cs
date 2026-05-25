@@ -16,6 +16,7 @@ public static class BusinessExtensions
             .AddScoped<IOrderService, OrderService>()
             .AddScoped<IProductService, ProductService>()
             .AddScoped<IUserService, UserService>()
+            .AddScoped<ITokenService, TokenService>()
             .AddHostedService<ExpiredOrderCleanupService>();
     }
 }

@@ -1,9 +1,11 @@
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcomFinale.Web.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/CartItems")]
 public class CartItemsController : ControllerBase

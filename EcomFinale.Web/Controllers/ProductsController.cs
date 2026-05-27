@@ -1,9 +1,11 @@
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcomFinale.Web.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/Products")]
 public class ProductsController : ControllerBase
@@ -35,6 +37,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpPost]
     public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto productDto)
     {
@@ -47,6 +50,7 @@ public class ProductsController : ControllerBase
         );
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ProductDto>> UpdateProduct(
         int id,
@@ -57,6 +61,7 @@ public class ProductsController : ControllerBase
         return Ok(updated);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduct(int id)
     {

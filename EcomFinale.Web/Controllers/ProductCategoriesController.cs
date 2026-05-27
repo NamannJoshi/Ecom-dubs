@@ -1,9 +1,11 @@
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcomFinale.Web.Controllers;
 
+[Authorize(Policy = "AdminOnly")]
 [ApiController]
 [Route("api/ProductCategories")]
 public class ProductCategoriesController : ControllerBase

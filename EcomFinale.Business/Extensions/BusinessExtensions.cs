@@ -10,12 +10,14 @@ public static class BusinessExtensions
     public static IServiceCollection AddBusinessExtensions(this IServiceCollection services)
     {
         return services
+            .AddScoped<IAuthService, AuthService>()
             .AddScoped<ICartItemService, CartItemService>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductCategoryService, ProductCategoryService>()
             .AddScoped<IOrderService, OrderService>()
             .AddScoped<IProductService, ProductService>()
             .AddScoped<IUserService, UserService>()
+            .AddScoped<ITokenService, TokenService>()
             .AddHostedService<ExpiredOrderCleanupService>();
     }
 }

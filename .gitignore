@@ -51,8 +51,6 @@ publish/
 **/Properties/PublishProfiles/*.pubxml
 
 # Local secrets & appsettings overrides
-appsettings.Development.json
-appsettings.Local.json
 secrets.json
 .env
 .env.*

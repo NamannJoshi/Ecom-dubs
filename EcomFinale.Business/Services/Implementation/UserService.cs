@@ -50,10 +50,6 @@ public class UserService : IUserService
     public async Task<UserDto?> GetByEmail(string email)
     {
         var user = await this.userRepository.GetByEmail(email);
-        if (user == null)
-        {
-            throw new KeyNotFoundException("User with matching identifier is not found");
-        }
 
         return this.mapper.Map<UserDto>(user);
     }

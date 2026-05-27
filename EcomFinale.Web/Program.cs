@@ -1,11 +1,31 @@
+using System.Reflection.Metadata;
 using EcomFinale.Business.Extensions;
 using EcomFinale.DataAccess.Extensions;
+using EcomFinale.Web.Extensions;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description =
+            "Enter JWT token like: Bearer {your token}"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = [],
+    });
+});
 builder.Services.AddDataExtensions(config);
 builder.Services.AddRepositories();
 builder.Services.AddBusinessExtensions();
@@ -14,9 +34,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 
-// builder.Services.AddAuthentication();
-// builder.Services.AddAuthorization();
+builder.Services.AddJwtExtension(config);
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly",
+        policy => policy.RequireRole("Admin"));
 
+    options.AddPolicy("UserOnly",
+        policy => policy.RequireRole("User"));
+});
 
 var app = builder.Build();
 

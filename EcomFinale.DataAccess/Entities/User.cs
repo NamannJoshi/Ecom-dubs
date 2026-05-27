@@ -1,11 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 namespace EcomFinale.DataAccess.Entities;
 
 [Table("Users")]
+[Index(nameof(Email), IsUnique = true)]
 public class User
 {
     [Key]

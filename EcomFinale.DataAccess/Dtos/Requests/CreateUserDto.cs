@@ -13,4 +13,8 @@ public class CreateUserDto
     [EmailAddress]
     [MaxLength(300)]
     public string Email { get; set; }
+
+    [Required]
+    [MaxLength(250)]
+    public string PasswordHash { get; set; }
 }

@@ -1,5 +1,5 @@
 using EcomFinale.Business.Services;
-using Microsoft.AspNetCore.Identity.Data;
+using EcomFinale.DataAccess.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcomFinale.Web.Controllers;
@@ -8,27 +8,24 @@ namespace EcomFinale.Web.Controllers;
 [Route("api/Auth")]
 public class AuthController : ControllerBase
 {
-    private readonly ITokenService _tokenService;
-    private readonly IUserService _userService;
+    private readonly IAuthService authService;
 
-    public AuthController(ITokenService tokenService, IUserService userService)
+    public AuthController(IAuthService authService)
     {
-        _tokenService = tokenService;
-        _userService = userService;
+        this.authService = authService;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<ActionResult<string>> Login([FromBody] LoginDto request)
     {
-        // For demonstration, we are using hardcoded user validation.
-        // In a real application, you would validate the user against a database.
-        var user = await _userService.GetByEmail(request.Email);
-        if (user == null || user.PasswordHash != request.Password)
-        {
-            return Unauthorized();
-        }
-    
-        var token = _tokenService.GenerateToken(user.Id.ToString(), request.Email, user.Role);
+        var token = await authService.Login(request);
+        return Ok(new { Token = token });
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<string>> Register([FromBody] RegisterDto request)
+    {
+        var token = await authService.Register(request);
         return Ok(new { Token = token });
     }
 }

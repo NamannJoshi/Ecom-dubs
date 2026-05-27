@@ -1,10 +1,13 @@
 using EcomFinale.DataAccess.Dtos;
+using EcomFinale.DataAccess.Dtos.Requests;
 
 namespace EcomFinale.Business.Services;
 
 public interface IAuthService
 {
-    Task<string> Login(LoginDto request);
+    Task<TokenResponseDto> Login(LoginDto request);
 
-    Task<string> Register(RegisterDto request);
+    Task<UserDto> Register(RegisterDto request);
+
+    Task<string> CheckRefreshToken(string refreshToken);
 }

@@ -1,3 +1,4 @@
+using EcomFinale.Business.Common;
 using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Dtos.Requests;
@@ -17,6 +18,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Pagination(DefaultPageSize = 5, EntityType = typeof(UserDto))]
     public ActionResult<IQueryable<UserDto>> GetAllUsers()
     {
         var users = userService.GetAllUsers();

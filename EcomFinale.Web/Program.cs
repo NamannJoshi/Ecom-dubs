@@ -35,6 +35,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 
 builder.Services.AddJwtExtension(config);
+builder.Services.AddStripeExtension(config);
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly",

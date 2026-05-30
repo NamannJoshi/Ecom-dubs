@@ -12,9 +12,16 @@ public class CartRepository : ICartRepository
         this.context = context;
     }
 
-    public IQueryable<Cart> GetAllCarts()
+    public IQueryable<Cart> GetAllCarts(CartStatus? status = null)
     {
-        return this.context.Carts;
+        var query = this.context.Carts.AsQueryable();
+
+        if (status.HasValue)
+        {
+            query = query.Where(c => c.CartStatus == status.Value);
+        }
+
+        return query;
     }
 
     public async Task<Cart> Create(Cart cart)
@@ -31,12 +38,13 @@ public class CartRepository : ICartRepository
         return await this.context.Carts.FindAsync(id);
     }
 
-    public async Task<Cart?> GetByUserId(int userId)
+    public async Task<Cart?> GetByUserId(int userId, CartStatus? status = null)
     {
-        return await this.context.Carts
-            .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
-            .FirstOrDefaultAsync(c => c.UserId == userId);
+        var query = this.GetAllCarts(status)
+                        .Include(c => c.CartItems)
+                            .ThenInclude(ci => ci.Product);
+          
+        return await query.FirstOrDefaultAsync(c => c.UserId == userId);
     }
 
     public async Task Delete(int id)

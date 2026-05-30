@@ -34,10 +34,8 @@ public class ProductCategoryService : IProductCategoryService
     public async Task<ProductCategoryDto> Create(ProductCategoryDto categoryDto)
     {
         var entity = this.mapper.Map<ProductCategory>(categoryDto);
+
         AuditHelper.ApplyAuditValues(entity, true);
-        var utc = DateTime.UtcNow;
-        entity.CreatedBy = 1;
-        entity.ModifiedBy = 1;
 
         var created = await this.productCategoryRepository.Create(entity);
 

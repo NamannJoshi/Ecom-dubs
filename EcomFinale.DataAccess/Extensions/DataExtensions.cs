@@ -21,6 +21,7 @@ public static class DataExtensions
         return services
             .AddScoped<ICartRepository, CartRepository>()
             .AddScoped<ICartItemRepository, CartItemRepository>()
+            .AddScoped<IPaymentRepository, PaymentRepository>()
             .AddScoped<IProductCategoryRepository, ProductCategoryRepository>()
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>()

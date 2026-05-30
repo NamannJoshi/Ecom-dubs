@@ -2,10 +2,11 @@ using EcomFinale.Business.Services;
 using EcomFinale.DataAccess.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace EcomFinale.Web.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/Orders")]
 public class OrdersController : ControllerBase
@@ -24,19 +25,6 @@ public class OrdersController : ControllerBase
         return Ok(updatedOrder);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder([FromBody] OrderDto orderCreateDto, [FromHeader(Name = "Idempotency-Key")] string? idempotencyKey)
-    {
-        var idempotencyId = idempotencyKey ?? throw new ArgumentException("Idempotency-Key header is required");
-
-        if (!Guid.TryParse(idempotencyId, out var parsedIdempotencyId))
-        {
-            throw new ArgumentException("Idempotency-Key header must be a valid GUID");
-        }
-        var createdOrder = await this.orderService.CreateOrder(orderCreateDto, parsedIdempotencyId);
-        return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
-    }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
@@ -51,5 +39,19 @@ public class OrdersController : ControllerBase
     {
         var orders = this.orderService.GetAllOrders();
         return Ok(orders);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("success")]
+    public async Task PaymentSuccess()
+    {
+        Console.WriteLine("Payment was successful!");
+    }
+
+    [AllowAnonymous]
+    [HttpPost("failed")]
+    public async Task PaymentFailed()
+    {
+        Console.WriteLine("Payment failed!");
     }
 }

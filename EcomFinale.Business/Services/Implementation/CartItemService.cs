@@ -30,7 +30,7 @@ public class CartItemService : ICartItemService
   
     public async Task<CartItemDto> Create(CreateCartItemDto cartItemDto)
     {
-        var currentUserId = 1;
+        var currentUserId = 9;
         var cart = await this.cartRepository.GetByUserId(currentUserId);
 
         var product = await this.productRepository.GetById(cartItemDto.ProductId) ??

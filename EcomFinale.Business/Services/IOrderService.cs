@@ -6,6 +6,7 @@ public interface IOrderService
 {
     Task<OrderDto> CreateOrder(OrderDto orderCreateDto, Guid idempotencyId);
     Task<OrderDto> GetOrderById(int id);
+    Task ProductInventoryRollbackByOrder(int orderId);
     IQueryable<OrderDto> GetAllOrders();
     Task<OrderDto> UpdateOrder(int id, OrderDto orderUpdateDto);
     Task OrderRollback();

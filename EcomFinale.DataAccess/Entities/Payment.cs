@@ -25,9 +25,9 @@ public class Payment : AuditEntity
     [Key]
     public int Id { get; set; }
 
-    public string PaymentId { get; set; }
+    public string? PaymentId { get; set; }
 
-    public string PaymentMethod { get; set; }
+    public string? PaymentMethod { get; set; }
 
     [Column(TypeName = "decimal(12,2)")]
     public decimal AmountPaid { get; set; }

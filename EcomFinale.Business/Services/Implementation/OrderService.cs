@@ -5,6 +5,9 @@ using EcomFinale.DataAccess.Entities;
 using EcomFinale.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using EcomFinale.Business.Common;
+using Stripe;
+using Stripe.BillingPortal;
+using Stripe.Checkout;
 
 namespace EcomFinale.Business.Services.Implementation;
 
@@ -41,13 +44,13 @@ public class OrderService : IOrderService
 
         var order = new Order
         {
-            UserId = 1,
+            UserId = 9,
             Status = OrderStatus.Pending,
             IdempotencyId = idempotencyId,
         };
         AuditHelper.ApplyAuditValues(order, true);
 
-        var currentCart = await this.cartRepository.GetByUserId(1);
+        var currentCart = await this.cartRepository.GetByUserId(9, CartStatus.Active);
         if (currentCart == null || currentCart.CartStatus != CartStatus.Active || currentCart.CartItems.Count == 0)
         {
             throw new InvalidOperationException("Cart is empty or inactive. Cannot create order.");
@@ -55,7 +58,7 @@ public class OrderService : IOrderService
 
         await this._unitOfWork.BeginTransactionAsync();
 
-       try
+        try
         {
             foreach (var cartItem in currentCart.CartItems)
             {
@@ -68,7 +71,7 @@ public class OrderService : IOrderService
                 Quantity = ci.Quantity,
                 UnitPrice = ci.Product.Price,
             }).ToList();
-           
+
             order.TotalAmount = currentCart.CartItems.Sum(ci => ci.Quantity * ci.Product.Price);
 
             var createdOrder = await this.orderRepository.Create(order);
@@ -89,7 +92,7 @@ public class OrderService : IOrderService
             throw;
         }
     }
-    
+
     public async Task OrderRollback()
     {
         var orderIds = this.orderRepository.GetAll()
@@ -98,19 +101,7 @@ public class OrderService : IOrderService
             .ToList();
         foreach (var orderId in orderIds)
         {
-            var order = await this.orderRepository.GetById(orderId) ?? throw new KeyNotFoundException("Order with matching identifier is not found");
-
-            order.Status = OrderStatus.Abandoned;
-
-            foreach (var item in order.OrderItems)
-            {
-                var product = await this.productRepository.GetById(item.ProductId) ?? throw new KeyNotFoundException("Product with matching identifier is not found");
-                product.StockQuantity += item.Quantity;
-
-                await this.productRepository.SaveChanges();
-            }
-
-            await this.orderRepository.SaveChangesAsync();
+            await ProductInventoryRollbackByOrder(orderId);
         }
     }
 
@@ -165,5 +156,22 @@ public class OrderService : IOrderService
         await this.orderRepository.SaveChangesAsync();
 
         return mapper.Map<OrderDto>(existingOrder);
+    }
+
+    public async Task ProductInventoryRollbackByOrder(int orderId)
+    {
+        var order = await this.orderRepository.GetById(orderId) ?? throw new KeyNotFoundException("Order with matching identifier is not found");
+
+            order.Status = OrderStatus.Abandoned;
+
+            foreach (var item in order.OrderItems)
+            {
+                var product = await this.productRepository.GetById(item.ProductId) ?? throw new KeyNotFoundException("Product with matching identifier is not found");
+                product.StockQuantity += item.Quantity;
+
+                await this.productRepository.SaveChanges();
+            }
+
+            await this.orderRepository.SaveChangesAsync();
     }
 }

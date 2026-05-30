@@ -8,4 +8,6 @@ public class OrderDto
     public OrderStatus Status { get; set; }
     public decimal TotalAmount { get; set; }
     public int UserId { get; set; }
+
+    public ICollection<OrderItemDto> OrderItems { get; set; }
 }

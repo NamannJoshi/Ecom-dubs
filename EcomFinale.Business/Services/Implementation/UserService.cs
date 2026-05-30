@@ -31,6 +31,7 @@ public class UserService : IUserService
     public async Task<UserDto> Create(CreateUserDto user)
     {
         var entity = this.mapper.Map<User>(user);
+        entity.Role = UserRole.Admin;
         var created = await this.userRepository.Create(entity);
 
         return this.mapper.Map<UserDto>(created);

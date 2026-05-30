@@ -64,13 +64,16 @@ public class CartService : ICartService
         return this.mapper.Map<CartDto>(cart);
     }
 
-    public async Task<CartDto> CheckoutCart(int id)
+    public async Task<CartDto> CheckoutCart(int userId)
     {
-        var cartDto = new CartDto
-        {
-            CartStatus = CartStatus.Converted
-        };
-        return await this.Update(cartDto, id);
+        var cart = await this.cartRepository.GetByUserId(userId, CartStatus.Active) ??
+            throw new KeyNotFoundException("Active cart for the user is not found");
+
+        cart.CartStatus = CartStatus.Converted;
+        var cartDto = this.mapper.Map<CartDto>(cart);
+
+        await this.Update(cartDto, cartDto.Id);
+        return cartDto;
     }
   
     public async Task Delete(int id)

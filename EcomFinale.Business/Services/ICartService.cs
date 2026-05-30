@@ -11,7 +11,7 @@ public interface ICartService
 
     Task<CartDto> Update(CartDto cartDto, int id);
 
-    Task<CartDto> CheckoutCart(int id);
+    Task<CartDto> CheckoutCart(int userId);
 
     Task Delete(int id);
 }

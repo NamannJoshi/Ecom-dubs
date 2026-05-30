@@ -50,7 +50,7 @@ public class OrderService : IOrderService
         };
         AuditHelper.ApplyAuditValues(order, true);
 
-        var currentCart = await this.cartRepository.GetByUserId(9);
+        var currentCart = await this.cartRepository.GetByUserId(9, CartStatus.Active);
         if (currentCart == null || currentCart.CartStatus != CartStatus.Active || currentCart.CartItems.Count == 0)
         {
             throw new InvalidOperationException("Cart is empty or inactive. Cannot create order.");

@@ -40,7 +40,7 @@ public class PaymentService : IPaymentService
         var order = await this.orderService.GetOrderById(orderId);
         if (order == null || order.Status != OrderStatus.Pending)
         {
-            throw new KeyNotFoundException("Order not found");
+            throw new KeyNotFoundException("Order not found or not in pending state");
         }
 
         var payableAmount = order.OrderItems.Sum(item => item.Quantity * item.UnitPrice);

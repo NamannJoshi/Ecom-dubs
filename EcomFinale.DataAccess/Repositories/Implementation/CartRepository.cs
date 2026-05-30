@@ -42,7 +42,13 @@ public class CartRepository : ICartRepository
     {
         var query = this.GetAllCarts(status)
                         .Include(c => c.CartItems)
-                            .ThenInclude(ci => ci.Product);
+                            .ThenInclude(ci => ci.Product)
+                        .AsQueryable();
+
+        if (status.HasValue)
+        {
+            query = query.Where(o => o.CartStatus == status);
+        }
           
         return await query.FirstOrDefaultAsync(c => c.UserId == userId);
     }

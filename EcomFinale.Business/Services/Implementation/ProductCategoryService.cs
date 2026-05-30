@@ -9,14 +9,17 @@ namespace EcomFinale.Business.Services.Implementation;
 public class ProductCategoryService : IProductCategoryService
 {
     private readonly IProductCategoryRepository productCategoryRepository;
+    private readonly ICurrentUserService currentUserService;
     private readonly IMapper mapper;
 
     public ProductCategoryService(
         IProductCategoryRepository productCategoryRepository,
+        ICurrentUserService currentUserService,
         IMapper mapper
     )
     {
         this.productCategoryRepository = productCategoryRepository;
+        this.currentUserService = currentUserService;
         this.mapper = mapper;
     }
 
@@ -33,9 +36,10 @@ public class ProductCategoryService : IProductCategoryService
 
     public async Task<ProductCategoryDto> Create(ProductCategoryDto categoryDto)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims()!;
         var entity = this.mapper.Map<ProductCategory>(categoryDto);
 
-        AuditHelper.ApplyAuditValues(entity, true);
+        AuditHelper.ApplyAuditValues(entity, currentUser.UserId, true);
 
         var created = await this.productCategoryRepository.Create(entity);
 
@@ -61,6 +65,7 @@ public class ProductCategoryService : IProductCategoryService
         int id
     )
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims();
         var category = await this.productCategoryRepository.GetById(id);
 
         if (category == null)
@@ -71,7 +76,7 @@ public class ProductCategoryService : IProductCategoryService
         }
 
         this.mapper.Map(categoryDto, category);
-        AuditHelper.ApplyAuditValues(category, false);
+        AuditHelper.ApplyAuditValues(category, currentUser.UserId, false);
 
         await this.productCategoryRepository.SaveChanges();
 

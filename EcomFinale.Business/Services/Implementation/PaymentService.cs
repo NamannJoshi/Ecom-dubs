@@ -1,3 +1,4 @@
+using EcomFinale.Business.Common;
 using EcomFinale.DataAccess.Dtos;
 using EcomFinale.DataAccess.Dtos.Requests;
 using EcomFinale.DataAccess.Entities;
@@ -17,12 +18,14 @@ public class PaymentService : IPaymentService
     private readonly StripeOptions stripeOptions;
     private readonly IOrderService orderService;
     private readonly ICartService cartService;
+    private readonly ICurrentUserService currentUserService;
     private readonly IPaymentRepository paymentRepository;
 
-    public PaymentService(IOrderService orderService, ICartService cartService, IPaymentRepository paymentRepository, IOptions<StripeOptions> stripeOptions)
+    public PaymentService(IOrderService orderService, ICartService cartService, ICurrentUserService currentUserService, IPaymentRepository paymentRepository, IOptions<StripeOptions> stripeOptions)
     {
         this.orderService = orderService;
         this.cartService = cartService;
+        this.currentUserService = currentUserService;
         this.paymentRepository = paymentRepository;
         this.stripeOptions = stripeOptions.Value;
     }
@@ -37,6 +40,7 @@ public class PaymentService : IPaymentService
 
     public async Task<string> PaymentInitialization(int orderId)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims();
         var order = await this.orderService.GetOrderById(orderId);
         if (order == null || order.Status != OrderStatus.Pending)
         {
@@ -52,6 +56,7 @@ public class PaymentService : IPaymentService
             AmountPaid = payableAmount,
             PaymentId = paymentId.ToString(),
         };
+        AuditHelper.ApplyAuditValues(payment, currentUser.UserId, true);
 
         // Store transaction/session id
         await this.paymentRepository.Create(payment);
@@ -106,6 +111,7 @@ public class PaymentService : IPaymentService
 
     public async Task WebhookHandler(StripeWebhookDto webhookDto)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims();
         Event stripeEvent;
         var stripeWebhookSecret = this.stripeOptions.WebhookSecret;
 
@@ -149,6 +155,7 @@ public class PaymentService : IPaymentService
                                     throw new KeyNotFoundException("Payment with stored payment id is not found.");
 
                     payment.Status = PaymentStatus.Paid;
+                    AuditHelper.ApplyAuditValues(payment, currentUser.UserId, false);
                     await this.paymentRepository.SaveChanges();
                     break;
                 }
@@ -173,6 +180,7 @@ public class PaymentService : IPaymentService
                     await this.orderService.ProductInventoryRollbackByOrder(orderId);
 
                     payment.Status = PaymentStatus.Failed;
+                    AuditHelper.ApplyAuditValues(payment, currentUser.UserId, false);
                     await this.paymentRepository.SaveChanges();
                     break;
                 }

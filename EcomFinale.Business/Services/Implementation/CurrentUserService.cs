@@ -21,7 +21,7 @@ public class CurrentUserService : ICurrentUserService
 
         if (claims == null || !claims.Any())
         {
-            return null;
+            throw new UnauthorizedAccessException("Token claims are not found.");
         }
 
         var userId = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value ?? string.Empty;
@@ -29,10 +29,11 @@ public class CurrentUserService : ICurrentUserService
         var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
 
         Enum.TryParse<UserRole>(role, true, out var parsedRole);
+        int.TryParse(userId, out var parseUserId);
 
         return new JwtClaims
         {
-            UserId = userId,
+            UserId = parseUserId,
             Email = email,
             Role = parsedRole,
         };

@@ -4,16 +4,16 @@ namespace EcomFinale.Business.Common;
 
 public static class AuditHelper
 {
-    public static void ApplyAuditValues<T>(T entity, bool isCreated)
+    public static void ApplyAuditValues<T>(T entity, int userId, bool isCreated)
          where T : AuditEntity
     {
         var utc = DateTime.UtcNow;
         if (isCreated)
         {
-            entity.CreatedBy = 9;
+            entity.CreatedBy = userId;
             entity.CreatedAt = utc;
         }
-        entity.ModifiedBy = 9;
+        entity.ModifiedBy = userId;
         entity.ModifiedAt = utc;
     }
 }

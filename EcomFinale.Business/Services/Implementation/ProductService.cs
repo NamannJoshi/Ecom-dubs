@@ -9,11 +9,13 @@ namespace EcomFinale.Business.Services.Implementation;
 public class ProductService : IProductService
 {
     private readonly IProductRepository productRepository;
+    private readonly ICurrentUserService currentUserService;
     private readonly IMapper mapper;
 
-    public ProductService(IProductRepository productRepository, IMapper mapper)
+    public ProductService(IProductRepository productRepository, ICurrentUserService currentUserService, IMapper mapper)
     {
         this.productRepository = productRepository;
+        this.currentUserService = currentUserService;
         this.mapper = mapper;
     }
 
@@ -32,9 +34,10 @@ public class ProductService : IProductService
 
     public async Task<ProductDto> Create(ProductDto productDto)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims();
         var entity = this.mapper.Map<Product>(productDto);
 
-        AuditHelper.ApplyAuditValues(entity, true);
+        AuditHelper.ApplyAuditValues(entity, currentUser.UserId, true);
         var created = await this.productRepository.Create(entity);
 
         return this.mapper.Map<ProductDto>(created);
@@ -54,6 +57,7 @@ public class ProductService : IProductService
 
     public async Task<ProductDto> Update(ProductDto productDto, int id)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims();
         var product = await this.productRepository.GetById(id);
 
         if (product == null)
@@ -62,8 +66,8 @@ public class ProductService : IProductService
         }
 
         this.mapper.Map(productDto, product);
-        AuditHelper.ApplyAuditValues(product, false);
-        
+        AuditHelper.ApplyAuditValues(product, currentUser.UserId, false);
+
         await this.productRepository.SaveChanges();
 
         return this.mapper.Map<ProductDto>(product);

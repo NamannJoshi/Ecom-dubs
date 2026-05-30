@@ -54,7 +54,7 @@ public class OrderService : IOrderService
             Status = OrderStatus.Pending,
             IdempotencyId = idempotencyId,
         };
-        AuditHelper.ApplyAuditValues(order, true);
+        AuditHelper.ApplyAuditValues(order, currentUser.UserId, true);
 
         var currentCart = await this.cartRepository.GetByUserId(currentUser.UserId, CartStatus.Active);
         if (currentCart == null || currentCart.CartStatus != CartStatus.Active || currentCart.CartItems.Count == 0)

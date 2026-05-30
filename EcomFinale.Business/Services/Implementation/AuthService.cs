@@ -24,7 +24,12 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
 
-        var accessToken = _tokenService.GenerateToken(user.Id.ToString(), request.Email, user.Role);
+        var accessToken = _tokenService.GenerateToken(new Models.JwtClaims
+        {
+            UserId = user.Id,
+            Email = user.Email,
+            Role = user.Role,
+        });
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         return new TokenResponseDto
@@ -75,7 +80,12 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("User associated with the refresh token not found.");
         }
 
-        var token =_tokenService.GenerateToken(entity.UserId.ToString(), user.Email, user.Role);
+        var token =_tokenService.GenerateToken(new Models.JwtClaims
+        {
+            UserId = user.Id,
+            Email = user.Email,
+            Role = user.Role,
+        });
         return token;
     }
 }

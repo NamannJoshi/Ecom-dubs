@@ -16,6 +16,7 @@ public class OrderService : IOrderService
     private readonly IOrderRepository orderRepository;
     private readonly IProductRepository productRepository;
     private readonly ICartRepository cartRepository;
+    private readonly ICurrentUserService currentUserService;
     private readonly IOrderItemRepository orderItemRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper mapper;
@@ -24,18 +25,23 @@ public class OrderService : IOrderService
         IOrderRepository orderRepository,
         IProductRepository productRepository,
         ICartRepository cartRepository,
+        ICurrentUserService currentUserService,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
+        this.currentUserService = currentUserService;
         _unitOfWork = unitOfWork;
         this.mapper = mapper;
     }
 
     public async Task<OrderDto> CreateOrder(OrderDto orderCreateDto, Guid idempotencyId)
     {
+        var currentUser = this.currentUserService.GetCurrentUserClaims() ?? 
+            throw new UnauthorizedAccessException("Token Claims not found");
+
         var existingOrder = await this.orderRepository.GetByIdempotencyId(idempotencyId);
         if (existingOrder != null)
         {
@@ -44,13 +50,13 @@ public class OrderService : IOrderService
 
         var order = new Order
         {
-            UserId = 9,
+            UserId = currentUser.UserId,
             Status = OrderStatus.Pending,
             IdempotencyId = idempotencyId,
         };
         AuditHelper.ApplyAuditValues(order, true);
 
-        var currentCart = await this.cartRepository.GetByUserId(9, CartStatus.Active);
+        var currentCart = await this.cartRepository.GetByUserId(currentUser.UserId, CartStatus.Active);
         if (currentCart == null || currentCart.CartStatus != CartStatus.Active || currentCart.CartItems.Count == 0)
         {
             throw new InvalidOperationException("Cart is empty or inactive. Cannot create order.");
@@ -107,7 +113,10 @@ public class OrderService : IOrderService
 
     public async Task Checkout(int orderId)
     {
-        var cart = await this.cartRepository.GetByUserId(1) ?? throw new KeyNotFoundException("Cart with matching identifier is not found");
+        var currentUser = this.currentUserService.GetCurrentUserClaims() ??
+            throw new UnauthorizedAccessException("Token claims not found");
+
+        var cart = await this.cartRepository.GetByUserId(currentUser.UserId) ?? throw new KeyNotFoundException("Cart with matching identifier is not found");
         if (cart.CartStatus != CartStatus.Active)
         {
             throw new InvalidOperationException("Cart is not active. Cannot checkout.");

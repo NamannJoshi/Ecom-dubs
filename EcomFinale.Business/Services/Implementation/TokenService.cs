@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using EcomFinale.Business.Models;
 using EcomFinale.DataAccess.Entities;
 using EcomFinale.DataAccess.Options;
 using EcomFinale.DataAccess.Repositories;
@@ -21,13 +22,13 @@ public class TokenService : ITokenService
         this.jwtOptions = jwtOptions;
     }
 
-    public string GenerateToken(string userId, string email, UserRole role)
+    public string GenerateToken(JwtClaims userClaims)
     {
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId),
-            new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(ClaimTypes.Role, role.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, userClaims.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, userClaims.Email),
+            new Claim(ClaimTypes.Role, userClaims.Role.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
